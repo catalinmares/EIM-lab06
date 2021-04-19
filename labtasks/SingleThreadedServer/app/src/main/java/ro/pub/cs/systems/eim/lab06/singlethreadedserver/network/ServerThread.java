@@ -1,5 +1,6 @@
 package ro.pub.cs.systems.eim.lab06.singlethreadedserver.network;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -49,19 +50,10 @@ public class ServerThread extends Thread {
             serverSocket = new ServerSocket(Constants.SERVER_PORT);
             while (isRunning) {
                 Socket socket = serverSocket.accept();
-                Log.v(Constants.TAG, "Connection opened with " + socket.getInetAddress() + ":" + socket.getLocalPort());
 
-                // TODO exercise 5c
-                // simulate the fact the communication routine between the server and the client takes 3 seconds
-
-                PrintWriter printWriter = Utilities.getWriter(socket);
-                printWriter.println(serverTextEditText.getText().toString());
-                socket.close();
-                Log.v(Constants.TAG, "Connection closed");
-
-                // TODO exercise 5d
-                // move the communication routine between the server and the client on a separate thread (each)
-
+                if (socket != null) {
+                    new CommunicationThread(socket, serverTextEditText).start();
+                }
             }
         } catch (IOException ioException) {
             Log.e(Constants.TAG, "An exception has occurred: " + ioException.getMessage());
