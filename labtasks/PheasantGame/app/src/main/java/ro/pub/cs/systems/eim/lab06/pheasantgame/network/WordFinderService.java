@@ -39,6 +39,7 @@ public class WordFinderService extends AsyncTask<String, Object, List<String>> {
                 ioException.printStackTrace();
             }
         }
+
         Document htmlPage = Jsoup.parse(content);
         List<String> wordList = new LinkedList<>();
         for (Element element: htmlPage.getElementsByClass(Constants.WORD_TAG)) {
